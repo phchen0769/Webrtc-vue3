@@ -1,148 +1,238 @@
+# WebRtc
 
-# vue-webrtc
+## 简述
 
-WebRTC component designed for Vue 3 ... See the [DEMO](https://tinyurl.com/vue-webrtc)
+> 本项目采用了以下技术栈来实现一个`WebRTC`视频通话的`DEMO`，结构简单，主要是体现`WebRtc`之间的协议传输。
+>
+> 前端: `typescript`、`Vue3`、`Vite`
+>
+> 后端: `nodejs`
+>
+> 信令交互: `socket.io`
+>
+>  **`WebRTC`**使用的信令服务器主要是用于建立和维护端到端通信的会话控制信息的传输。一旦会话建立成功，信令服务器就**不再需要参与实时通信过程**中的音视频数据传输。因此，在信令服务器关闭后，已经建立的通话仍然可以继续进行，但无法再开始新的通话或重新连接已关闭的通话。
+>
+>  在建立`WebRTC`连接时，浏览器会自动处理STUN和TURN协议，以确保可靠的通信。因此，即使信令服务器关闭，已经建立的`WebRTC`连接仍然可以继续运行。这种设计使得`WebRTC`成为一种高效可靠的实时通讯技术。
 
-<p align="center">
-    <img src="docs/assets/screenshot.png">
-</p>
+## 启动
 
-[![Join](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/westonsoftware/vue-webrtc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![npm](https://img.shields.io/npm/v/vue-webrtc.svg)](https://www.npmjs.com/package/vue-webrtc)
-[![npm](https://img.shields.io/npm/dm/vue-webrtc.svg)](https://www.npmjs.com/package/vue-webrtc)
-![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+### 前端
 
-See [this](http://caniuse.com/#feat=stream)
-for browser compatibility.
++ 下载依赖
 
-## Installation
-
-```
-npm install vue-webrtc --save
-
-```
-
-## Usage
-
-```javascript
-import Vue from 'vue'
-import WebRTC from 'vue-webrtc'
-Vue.use(WebRTC)
-
-// or
-import { VueWebRTC } from 'vue-webrtc'
-Vue.component(VueWebRTC.name, VueWebRTC)
-
-// or
-import { VueWebRTC } from 'vue-webrtc';
-export default {
-    name: 'App',
-    components: {
-        'vue-webrtc': VueWebRTC
-    },
-    ...
-
-// template
-<vue-webrtc ref="webrtc" width="100%" roomId="sample-room">
-</vue-webrtc>
+```shell
+npm i
 ```
 
-## Testing & Dev
++ 启动
 
+```shell
+# 启动端口为 3003
+npm run dev
 ```
+
+### 信令服务器
+
++ 进入服务器目录
+
+```shell
+cd .\service\
+```
+
++ 下载依赖
+
+```shell
+npm i
+```
+
++ 启动
+
+```shell
 npm run serve
 ```
 
-### Props
+## 效果
 
-| prop             | type    | default      | notes                     |
-| ---------------- | ------- | ------------ | ------------------------- |
-| roomId           | string  | 'public-room' | id of the room to join   |
-| socketURL        | string  | 'https://weston-vue-webrtc-lobby.azurewebsites.net' | URL of the signaling server, use this default or run your own, see .\vue-webrtc-lobby   |
-| cameraHeight     | number  | 160          | height of video element   |
-| autoplay         | boolean | true         | autoplay attribute        |
-| screenshotFormat | string  | 'image/jpeg' | format of screenshot      |
-| enableAudio      | boolean  | true | enables audio on join      |
-| enableVideo      | boolean  | true | enables video on join      |
-| enableLogs       | boolean  | false | enables webrtc console logs    |
-| deviceId       | string  | null | set video device id to a camera from navigator.mediaDevices.enumerateDevices()    |
-| peerOptions       | string  | { } | set SimplePeer options such as STUN and TURN from here [https://github.com/feross/simple-peer](https://github.com/feross/simple-peer)    |
-| ioOptions        | string  | { rejectUnauthorized: false, transports: ['polling', 'websocket'] } | set Socket IO from here [https://socket.io/docs/v4/client-options/](https://socket.io/docs/v4/client-options/)    |
+![1](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/65aba46c3b0b4574a7c40afb3be8fd63~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
 
-### Events
+> 因为需要信令服务器支持，这里就不开放线上预览链接了，可以直接 `clone` 下来尝试哦！
 
-| name           | param    | notes                                                         |
-| -------------- | -------- | ------------------------------------------------------------- |
-| opened-room    | roomid   | emitted when the first user opens the room                    |
-| joined-room    | video    | emitted when anyone joins the room                            |
-| left-room      | video.id | emitted when anyone leaves the room                           |
-| share-started  | video.id | emitted when a local screen share stream starts               |
-| share-stopped  | video.id | emitted when a local screen share stream stops                |
+## 问题解决
 
-### Methods
+> 看看你有没有出现如下问题:
 
-| name           | param    | notes                                                                   |
-| -------------- | -------- | ----------------------------------------------------------------------- |
-| join           | void     | Join a room, opening it if needed                                       |
-| leave          | void     | Leave a room                                                            |
-| capture        | void     | Capture the current image through the webcam as base64 encoded string   |
-| shareScreen    | void     | Share your screen or an app as video   |
+### 浏览器不支持
 
-### Styles
++ 报错
 
-.video-list
+> 一般会出现`getDisplayMedia`或`getUserMedia`未找到，具体错误根据浏览器。
 
-.video-item
++ 暂时支持的浏览器
 
-## History
+>  手机浏览器：
+>
+> Google Chrome for Android：版本号 52 及以上
+>
+> Firefox for Android：版本号 53 及以上
+>
+> Opera for Android：版本号 39 及以上
+>
+> UC Browser for Android：版本号 10.8 及以上
+>
+> Maxthon for Android：版本号 4.2.8.2000 及以上
+>
+> Safari：版本11及以上
+>
+> 电脑浏览器：
+>
+> Google Chrome：版本号 52 及以上
+>
+> Firefox：版本号 53 及以上
+>
+> Opera：版本号 39 及以上
+>
+> Microsoft Edge：版本号 79 及以上
+>
+> Safari：版本号 10.1 及以上
+>
+> Microsoft Edge：从版本12及以上
+>
+> 经过测试，电脑的`Chrome`与`Microsoft Edge`，手机的`Safari`浏览器支持度高。
 
-| Version           | Notes                                                                   |
-| -------------- | ----------------------------------------------------------------------- |
-| 3.0.1           | Added ioOptions for Socket IO 
-| 3.0.0           | Migrated from Vue 2 to Vue 3 
-| 2.0.0           | Replaced signaling server and webrtc library with SimplePeer 
-| 1.2.2           | Added stunServer and turnServer properties                                       |
-| 1.2.1           | Added Vue CLI sample, npm audit fixes                                       |
-| 1.2.0           | Added the Screen Share button                                       |
+### 不同浏览器时不显示视频
 
-## Upgrading from V2 to V3
-V3 of this component is a migration from Vue 2 to Vue 3.  There is no new functionality yet.  The older V2 will only be patched as needed and maintained as Vue 2.
++ 报错
 
-## Upgrading from V1 to V2
-V2 of this component is mostly compatible with V1 but it completely replaces the internals with a new signaling server and a new SimplePeer client.  Due to this, you will need to set the [socketUrl] to a new instance of the included .\vue-webrtc-lobby socket server.  There is a default instance that you are welcome to use but you should run your own.  If you are using STUN and TURN settings, you will now need to set those in [peerOptions] .
-
-## Quick Start with Vue CLI
+```shell
+DOMException: Could not start video source
 ```
-vue create sample
-cd sample
-yarn install
-npm install vue-webrtc --save
-```
-Now open the App.vue file and replace the HelloVue component with the code in the Usage section above.
-```
-npm run serve
-```
-See the /sample folder for a working project
 
-## Roadmap
-Some features that we would like to see added are:
-- Chat component
-- Audio selection
-- WebRTC data events
++ 这是媒体冲突问题，在同一台电脑，某个浏览器可能**已经占用**了您的摄像头或麦克风设备。
 
-Let us know what you'd like to see next and vote for a feature.
+### 使用IP时不显示视频
 
-## License
+> `WebR	TC`在大多数现代浏览器中要求使用`HTTPS`连接。这是出于**安全考虑**，确保音视频流和数据传输的隐私和完整性。使用`HTTPS`协议可以加密通信，并防止恶意第三方窃听或篡改数据。因此，在使用`WebRTC`时，需要将网页部署在使用有效的`SSL`证书的`https`服务器上。
 
-MIT
+报错: `TypeError: Cannot read properties of undefined (reading 'getUserMedia')`
 
-## Credits
++ 解决方法1:
 
-Author: [@AndyWeston on GitHub at vue-webrtc](https://github.com/westonsoftware)
+  + 直接修改浏览器安全策略(只对pc浏览器管用)
+  + 浏览器输入 chrome://flags/#unsafely-treat-insecure-origin-as-secure
+  + 找到 Insecure origins treated as secure 配置输入对于的地址，例如:http://192.168.0.23:5500 (多个可以以,逗号隔开)
+  + 选择Enabled，最后重新进入浏览器。
 
-This project is based off of:
++ 解决方法2:
 
-[SimplePeer](https://github.com/feross/simple-peer)
+  + 在本地使用`nginx`映射`https`路径。
 
-[SimpleSignal](https://github.com/t-mullen/simple-signal)
+    > 该方式同样是需要`SSL`证书的。
+
+  + 本地nginx配置
+  
+  ```yml
+  # ...
+  http {
+      include       mime.types;
+      default_type  application/octet-stream;
+      sendfile        on;
+      keepalive_timeout  65;
+  
+     server {
+        listen       443 ssl;
+        server_name  localhost;
+  	  # 配置自己的SSL证书
+        ssl_certificate C://Users//w//Desktop//xxx//xxx.crt;  
+        ssl_certificate_key C://Users//w//Desktop//xxxx//xxx.key;  
+  	
+  
+         ssl_session_cache    shared:SSL:1m;
+         ssl_session_timeout  5m;
+  
+         ssl_ciphers  HIGH:!aNULL:!MD5;
+         ssl_prefer_server_ciphers  on;
+         # 映射前端
+         location / {
+           proxy_pass http://localhost:5173;
+           
+          }
+          # 映射信令服务器
+         location /rtc {
+             proxy_pass  http://127.0.0.1:3003;
+             proxy_http_version 1.1;
+             proxy_set_header Upgrade $http_upgrade;
+             proxy_set_header Connection "upgrade";
+          }
+      }
+  
+  }
+  ```
+  
+  
+  
+    + 信令服务器链接修改后，我们前端请求头也得修改，路径在`src->config->index.ts`中
+  
+  ```ts
+  - export const baseUrl = process.env.NODE_ENV === "development" ? "http://localhost:3003/" : "https://xxxx.com/";
+  + export const baseUrl = process.env.NODE_ENV === "development" ? "https://ip/" : "https://xxxx.com/";
+  ```
+  
+  > 如果你需要部署在线上服务器，pro环境下的域名需要替换。
+  
+    + 配置完成后，启动`nginx`，并浏览器访问 https://ip 即可（可能浏览器会警告提示，点击继续访问）
+  
+    + 此时 `getUserMedia` 就可以正常使用，并且可以见链接发至手机，以及其他同一局域网设备，都是可以访问的。
+  
+  > 当然这种方式是不合格的，但开发阶段可以暂时这样解决问题，后续可以直接部署到线上服务器然后通过`nginx`映射`https`就可以了。
+  >
+  > 通过此方案已经可以实现**局域网视频通话**了，同理远程视频通话，可以部署再线上服务器即可。
+
+## 兼容问题
+
+### win10与win11兼容问题
+
++ `win11`发送的协议给`win10`时能正常接受，但最终回调的`streams`无法播放！
+
+> 这个问题比较神奇，没有任何错误显示，并`win10`发送协议给`win11`是没问题的，测试了很久，最终使用`electron`测试出来，原来`win10`与`win11`也有兼容问题，哪怕使用同一个版本的浏览器同样也会有这个问题。
+
++ 使用`electron`解决(亲测有效)
+
+> `Electron`是一个用于构建跨平台桌面应用程序的开源框架，它结合了`Chromium`浏览器内核和`Node.js`运行时环境。通过将`Chromium`嵌入到`Electron`中，开发人员可以使用Web`技术`（`HTML`、`CSS`和`JavaScript`）来构建桌面应用程序，并且能够调用底层操作系统的功能。因此，`Electron`可以看作是一个将浏览器内核和`JavaScript`应用程序封装在一起的运行时环境，这样就**不会有兼容问题**。
+
+### 手机浏览器兼容问题
+
+> 这里支持度比较好的浏览器是Safari，其他浏览器基本上都是在权限这一块难通过。
+
++ 手机浏览器无法显示本地视频，但可以接受以及发送！
+
++ 这个问题主要是涉及到了浏览器的**自动播放策略**。
+
+> + 在以下情况刚进入界面才允许播放:
+>
+>   - 静音状态允许播放 `muted`属性。
+>
+>   - 用户已经对界面进行了交互。
+>
+>   - 用户主屏幕或桌面上安装了PWA...(不现实)
+>
+>   - 站点网站的媒体参与度值已经超过了信用度(这个不能通过代码手动更改，需要浏览器算法评估，通过`chrome://media-engagement/` 查看)。
+>
+>
+> - 解决办法:
+>   - 先尝试进入界面就**play()自动播放**，如果**抛出异常**，**显示播放按钮**，让用户主动点击播放。(如果站点媒体参与值已经超过，就会主动播放)。
+>   - 进入站点静音播放，判断或延迟开启声音。
+>
+>
+> 注意：不同浏览器策略可能不一样。
+
+## 轮子
+
++ 框架
+  + ZEGO
+  + ...
++ 插件
+  + Adapter.js
+  + SimpleWebRTC
+  + PeerJS
+  + Twilio Vide
+  + ...

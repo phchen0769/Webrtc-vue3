@@ -24,6 +24,6 @@ RUN npm config set registry https://mirrors.huaweicloud.com/repository/npm/
 
 WORKDIR /workspaces/Remote-diagnosis-vue3
 
-EXPOSE 8080
+EXPOSE 8888
 
 CMD ["npm", "run", "serve"]
