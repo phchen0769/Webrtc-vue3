@@ -1,19 +1,20 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { svgBuilder } from "./src/plugins/svgBuilder";
-import path from "path";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import { svgBuilder } from './src/plugins/svgBuilder'
+import path from 'path'
 
 function resolve(url: string): string {
-  return path.resolve(__dirname, url);
+  return path.resolve(__dirname, url)
 }
 
 export default defineConfig({
   server: {
-    host: "0.0.0.0"
+    host: '0.0.0.0',
+    port: 5173
   },
-  plugins: [vue(), svgBuilder("./src/assets/imgs/")],
+  plugins: [vue(), svgBuilder('./src/assets/imgs/')],
   build: {
-    minify: "terser",
+    minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
@@ -23,7 +24,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": resolve("./src")
+      '@': resolve('./src')
     }
   },
   css: {
@@ -33,4 +34,4 @@ export default defineConfig({
       }
     }
   }
-});
+})
